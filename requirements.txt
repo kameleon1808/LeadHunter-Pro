@@ -3,3 +3,14 @@ pytest>=7.0.0
 pytest-asyncio>=0.21.0
 playwright>=1.40.0
 # After installing, run: playwright install chromium
+
+# Phase 3 — Enrichment
+# Primarni AI engine: Claude Code CLI (claude -p) — ne zahtijeva API ključ
+# anthropic>=0.20.0  # Opcionalno: instaliraj samo ako koristiš direktni Anthropic API
+aiohttp>=3.9.0
+beautifulsoup4>=4.12.0
+python-dotenv>=1.0.0
+
+# Phase 4 — Export & Dashboard
+openpyxl>=3.1.0
+rich>=13.0.0

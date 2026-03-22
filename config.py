@@ -4,6 +4,16 @@ import os
 # Database
 DATABASE_PATH = "data/leadhunter.db"
 
+# Enrichment — Phase 3
+# Primarni ekstraktor: Claude Code CLI (besplatno, koristi Claude Pro plan)
+# Ako je ANTHROPIC_API_KEY postavljen, koristi se direktni Anthropic API umjesto CLI-a.
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+CLAUDE_MODEL = "claude-sonnet-4-5"        # koristi se i za CLI (--model flag) i za API
+MAX_PAGES_PER_SITE = 5
+ENRICHMENT_CONCURRENT_REQUESTS = 5        # paralelni HTTP zahtjevi (PageScraper)
+CLAUDE_CODE_MAX_CONCURRENT = 3            # paralelni claude CLI subprocess pozivi
+REQUEST_TIMEOUT_SECONDS = 30
+
 # Scraping (general)
 CHUNK_SIZE = 300
 MAX_RETRIES = 3
@@ -18,9 +28,9 @@ MAX_DELAY_SECONDS = 4.0
 # Set USE_BRAVE = True on Windows to use your existing Brave browser with its
 # real profile (cookies, history) — significantly reduces Google CAPTCHAs.
 # IMPORTANT: Brave must be fully closed before running the scraper.
-USE_BRAVE = False
+USE_BRAVE = True
 BRAVE_EXECUTABLE_PATH = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-BRAVE_USER_DATA_DIR = r"C:\Users\YOUR_USERNAME\AppData\Local\BraveSoftware\Brave-Browser\User Data"
+BRAVE_USER_DATA_DIR = r"C:\Users\Marko\AppData\Local\BraveSoftware\Brave-Browser\User Data"
 
 BLOCKED_DOMAINS = [
     "google.com",
