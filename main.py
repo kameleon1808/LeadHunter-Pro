@@ -61,6 +61,22 @@ def main():
     status_parser = subparsers.add_parser("status", help="Show campaign statistics")
     status_parser.add_argument("--campaign-id", type=int, required=True, help="Campaign ID")
 
+    # ── run (full pipeline) ──────────────────────────────────────────────────
+    run_parser = subparsers.add_parser(
+        "run",
+        help="Run the full pipeline: scrape → enrich → export (resumable)",
+    )
+    run_parser.add_argument("--campaign-id", type=int, required=True, help="Campaign ID")
+    run_parser.add_argument("--query",       type=str, required=True, help="Google search query")
+    run_parser.add_argument(
+        "--pages", type=int, default=config.SEARCH_PAGES_DEFAULT,
+        help=f"Number of search result pages (default: {config.SEARCH_PAGES_DEFAULT})",
+    )
+    run_parser.add_argument(
+        "--output", type=str, default="./exports/",
+        help="Export output directory (default: ./exports/)",
+    )
+
     # ── dispatch ─────────────────────────────────────────────────────────────
     args = parser.parse_args()
 
@@ -84,6 +100,9 @@ def main():
 
     elif args.command == "status":
         _run_status(db, args.campaign_id)
+
+    elif args.command == "run":
+        asyncio.run(_run_pipeline(db, args.campaign_id, args.query, args.pages, args.output))
 
     else:
         # init / default
@@ -225,6 +244,23 @@ async def _run_enrich(db, campaign_id: int, logger) -> None:
     print(f"Leads found : {final_stats['total_leads']}")
     print(f"Completed   : {final_stats['completed_urls']}")
     print(f"Failed      : {final_stats['failed_urls']}")
+
+
+async def _run_pipeline(
+    db: DatabaseManager,
+    campaign_id: int,
+    query: str,
+    pages: int,
+    output: str,
+) -> None:
+    from pipeline_runner import PipelineRunner
+
+    runner = PipelineRunner(db, campaign_id)
+    await runner.run_full_pipeline(
+        search_query=query,
+        num_pages=pages,
+        output_dir=output,
+    )
 
 
 if __name__ == "__main__":

@@ -1,16 +1,28 @@
-sqlalchemy>=2.0.0
-pytest>=7.0.0
-pytest-asyncio>=0.21.0
-playwright>=1.40.0
-# After installing, run: playwright install chromium
+# LeadHunter Pro — pinned dependencies
+# Install: pip install -r requirements.txt
+# After Playwright install: playwright install chromium
 
-# Phase 3 — Enrichment
-# Primarni AI engine: Claude Code CLI (claude -p) — ne zahtijeva API ključ
-# anthropic>=0.20.0  # Opcionalno: instaliraj samo ako koristiš direktni Anthropic API
-aiohttp>=3.9.0
-beautifulsoup4>=4.12.0
-python-dotenv>=1.0.0
+# Database
+SQLAlchemy==2.0.48
 
-# Phase 4 — Export & Dashboard
-openpyxl>=3.1.0
-rich>=13.0.0
+# Web scraping
+playwright==1.58.0
+aiohttp==3.13.3
+beautifulsoup4==4.14.3
+
+# AI enrichment
+# Primary engine: Claude Code CLI (claude -p) — no API key required
+# anthropic>=0.20.0  # Optional: install only if ANTHROPIC_API_KEY is set
+
+# Export
+openpyxl==3.1.5
+
+# Terminal UI
+rich==14.3.3
+
+# Configuration
+python-dotenv==1.2.2
+
+# Testing
+pytest==9.0.2
+pytest-asyncio==1.3.0

@@ -10,3 +10,4 @@ __pycache__/
 # Runtime data (generated on first run)
 data/
 logs/
+exports/
