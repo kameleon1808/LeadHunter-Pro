@@ -112,10 +112,7 @@ Campaign → Scrape → Enrich → Export
 ### `campaign create` — Create a new campaign
 
 ```bash
-python main.py campaign create \
-    --name "Q1 Marketing Agencies" \
-    --niche "digital marketing agencies" \
-    --country "Serbia"           # optional
+python main.py campaign create --name "Q1 Marketing Agencies" --niche "digital marketing agencies" --country "Serbia"           # optional
 ```
 
 ### `campaign list` — List all campaigns
