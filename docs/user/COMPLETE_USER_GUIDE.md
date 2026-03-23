@@ -124,10 +124,7 @@ python main.py campaign list
 ### `scrape` — Collect URLs from Google
 
 ```bash
-python main.py scrape \
-    --campaign-id 1 \
-    --query "digital marketing agencies Belgrade" \
-    --pages 5
+python main.py scrape --campaign-id 1 --query "digital marketing agencies Belgrade" --pages 5
 ```
 
 - `--pages`: number of Google result pages (10 results per page = ~50 URLs per page)
@@ -155,11 +152,7 @@ python main.py export --campaign-id 1 --output leads_q1.xlsx
 ### `run` — Full pipeline in one command
 
 ```bash
-python main.py run \
-    --campaign-id 1 \
-    --query "marketing agencies Serbia" \
-    --pages 5 \
-    --output ./exports/
+python main.py run --campaign-id 1 --query "marketing agencies Serbia" --pages 5 --output ./exports/
 ```
 
 Runs scrape → enrich → export automatically. Resumable — if interrupted,
@@ -189,18 +182,11 @@ Refreshes every 2 seconds. Press **Ctrl+C** to exit.
 
 ```bash
 # 1. Create campaign
-python main.py campaign create \
-    --name "Marketing Agencies Serbia 2025" \
-    --niche "digital marketing" \
-    --country "Serbia"
+python main.py campaign create --name "Marketing Agencies Serbia 2025" --niche "digital marketing" --country "Serbia"
 # → Campaign created — id=1
 
 # 2. Run the full pipeline
-python main.py run \
-    --campaign-id 1 \
-    --query "marketing agencija Beograd" \
-    --pages 5 \
-    --output ./exports/
+python main.py run --campaign-id 1 --query "marketing agencija Beograd" --pages 5 --output ./exports/
 
 # Pipeline output:
 # ════════════════════════════════════════════════════════════

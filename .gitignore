@@ -11,3 +11,5 @@ __pycache__/
 data/
 logs/
 exports/
+
+.env
