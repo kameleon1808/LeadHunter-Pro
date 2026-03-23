@@ -28,9 +28,12 @@ MAX_DELAY_SECONDS = 4.0
 # Set USE_BRAVE = True on Windows to use your existing Brave browser with its
 # real profile (cookies, history) — significantly reduces Google CAPTCHAs.
 # IMPORTANT: Brave must be fully closed before running the scraper.
-USE_BRAVE = True
-BRAVE_EXECUTABLE_PATH = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-BRAVE_USER_DATA_DIR = r"C:\Users\Marko\AppData\Local\BraveSoftware\Brave-Browser\User Data"
+USE_BRAVE = os.getenv("USE_BRAVE", "true").lower() == "true"
+BRAVE_EXECUTABLE_PATH = os.getenv(
+    "BRAVE_EXECUTABLE_PATH",
+    r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe",
+)
+BRAVE_USER_DATA_DIR = os.getenv("BRAVE_USER_DATA_DIR", "")
 
 BLOCKED_DOMAINS = [
     "google.com",
