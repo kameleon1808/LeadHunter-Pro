@@ -15,7 +15,9 @@
       "Bash(.venv/Scripts/python -m pytest --ignore=tests/test_url_scraper.py -v)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(pip install:*)",
+      "Bash(pip show:*)"
     ]
   }
 }
