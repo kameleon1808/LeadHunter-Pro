@@ -40,22 +40,37 @@ logger = logging.getLogger(__name__)
 from database import DatabaseManager  # noqa: E402
 
 
-def _check_playwright():
-    """Warn if Playwright Chromium is not installed."""
-    try:
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as p:
-            exe = p.chromium.executable_path
-            if not os.path.exists(exe):
-                raise FileNotFoundError(exe)
-    except Exception:
-        import tkinter.messagebox as mb
-        mb.showwarning(
-            "Playwright not installed",
-            "Playwright Chromium browser was not found.\n\n"
-            "Please run setup.bat (or: playwright install chromium) "
-            "before using the Scrape feature.",
-        )
+def _check_browser():
+    """
+    Warn if the configured browser is not available.
+
+    - USE_BRAVE=true  → check that the Brave executable exists.
+    - USE_BRAVE=false → check that Playwright Chromium is installed.
+    """
+    import tkinter.messagebox as mb
+
+    if config.USE_BRAVE:
+        brave_exe = config.BRAVE_EXECUTABLE_PATH
+        if not brave_exe or not os.path.exists(brave_exe):
+            mb.showwarning(
+                "Brave Browser not found",
+                f"Brave browser was not found at:\n{brave_exe}\n\n"
+                "Please install Brave or update BRAVE_EXECUTABLE_PATH in Settings.",
+            )
+    else:
+        try:
+            from playwright.sync_api import sync_playwright
+            with sync_playwright() as p:
+                exe = p.chromium.executable_path
+                if not os.path.exists(exe):
+                    raise FileNotFoundError(exe)
+        except Exception:
+            mb.showwarning(
+                "Playwright Chromium not installed",
+                "Playwright Chromium browser was not found.\n\n"
+                "Please run setup.bat (or: playwright install chromium) "
+                "before using the Scrape feature.",
+            )
 
 
 def main():
@@ -71,8 +86,8 @@ def main():
     db.initialize_db()
     logger.info("Database ready: %s", config.DATABASE_PATH)
 
-    # Non-blocking Playwright check (only warns, doesn't block launch)
-    _check_playwright()
+    # Non-blocking browser check (only warns, doesn't block launch)
+    _check_browser()
 
     # Launch GUI
     from gui import GUIApp
