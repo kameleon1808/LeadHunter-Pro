@@ -63,12 +63,14 @@ class URLScraper:
         await scraper.close_browser()
     """
 
-    def __init__(self, db_manager, campaign_id: int) -> None:
+    def __init__(self, db_manager, campaign_id: int, captcha_callback=None) -> None:
         self.db = db_manager
         self.campaign_id = campaign_id
         self._playwright = None
         self._browser: Optional[Browser] = None
         self._context: Optional[BrowserContext] = None
+        # Optional async callable(campaign_id) -> None; called instead of input() in GUI mode
+        self._captcha_callback = captcha_callback
 
     # ------------------------------------------------------------------
     # Browser lifecycle
@@ -183,9 +185,12 @@ class URLScraper:
                 # CAPTCHA check
                 if await self._is_captcha_page(page):
                     logger.warning("CAPTCHA detected on page %d. Waiting for manual solve…", page_num + 1)
-                    print("\n⚠️  CAPTCHA detected! Please solve it in the browser window.")
-                    print("   Press ENTER here once you have solved the CAPTCHA and are back on search results.")
-                    input()
+                    if self._captcha_callback is not None:
+                        await self._captcha_callback(self.campaign_id)
+                    else:
+                        print("\n⚠️  CAPTCHA detected! Please solve it in the browser window.")
+                        print("   Press ENTER here once you have solved the CAPTCHA and are back on search results.")
+                        input()
                     await self._random_delay(2.0, 5.0)
 
                     if await self._is_captcha_page(page):

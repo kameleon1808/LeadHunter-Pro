@@ -72,18 +72,20 @@ LOG_LEVEL = "INFO"
 LOG_FILE = "logs/leadhunter.log"
 
 
-def setup_logging():
+def setup_logging(gui_mode: bool = False):
     os.makedirs("logs", exist_ok=True)
 
     log_format = "[%(asctime)s] [%(levelname)s] [%(module)s] %(message)s"
     date_format = "%Y-%m-%d %H:%M:%S"
 
+    handlers = [logging.FileHandler(LOG_FILE)]
+    if not gui_mode:
+        # In GUI mode (windowed EXE) there is no console — skip StreamHandler
+        handlers.append(logging.StreamHandler())
+
     logging.basicConfig(
         level=getattr(logging, LOG_LEVEL),
         format=log_format,
         datefmt=date_format,
-        handlers=[
-            logging.StreamHandler(),
-            logging.FileHandler(LOG_FILE),
-        ],
+        handlers=handlers,
     )

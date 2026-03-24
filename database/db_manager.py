@@ -26,6 +26,7 @@ class DatabaseManager:
         def set_sqlite_pragma(dbapi_conn, _):
             cursor = dbapi_conn.cursor()
             cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.execute("PRAGMA journal_mode=WAL")
             cursor.close()
 
         self.Session = sessionmaker(bind=self.engine)
@@ -220,6 +221,23 @@ class DatabaseManager:
                 "failed_urls": failed,
                 "total_leads": total_leads,
             }
+
+    def get_recent_activity(self, campaign_id: int, limit: int = 10) -> List[URL]:
+        """Return most recently processed URLs (completed or failed) for the monitor."""
+        with Session(self.engine) as session:
+            records = (
+                session.query(URL)
+                .filter(
+                    URL.campaign_id == campaign_id,
+                    URL.status.in_(["completed", "failed"]),
+                )
+                .order_by(URL.processed_at.desc())
+                .limit(limit)
+                .all()
+            )
+            for r in records:
+                session.expunge(r)
+            return records
 
     # ------------------------------------------------------------------
     # Chunks

@@ -20,6 +20,9 @@ openpyxl==3.1.5
 # Terminal UI
 rich==14.3.3
 
+# GUI
+customtkinter==5.2.2
+
 # Configuration
 python-dotenv==1.2.2
 
